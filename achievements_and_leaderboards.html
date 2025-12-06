@@ -150,54 +150,48 @@
                     <li><a href="#zh-usage">使用方法</a></li>
                 </ul>
             </div>
-            
+
             <h2 id="zh-intro">扩展介绍</h2>
-            <p>这是一个由"一只数学柴"开发的Scratch扩展模板，展示了如何创建自定义Scratch扩展。该模板包含了各种类型的积木块示例，可以帮助开发者快速上手扩展开发。</p>
-            
+            <p>本扩展（Version 1.2.0）实现了“排行榜（Leaderboard）”与“成就（Achievements）”的功能，适用于在 Scratch/拓展环境中记录玩家分数与颁发成就。数据存储于本地 localStorage（键名：<code>turbo_leaderboards_v1</code>），并提供可视化覆盖层用于展示排行榜与成就列表。</p>
+
             <h2 id="zh-features">功能特性</h2>
             <ul>
-                <li>多种积木类型示例（命令块、报告块、布尔块等）</li>
-                <li>带参数的积木示例</li>
-                <li>菜单选项示例</li>
-                <li>按钮交互示例</li>
-                <li>标签分类示例</li>
-                <li>多语言支持</li>
+                <li>排行榜：创建榜单、提交分数、查询前 N 名、查询名次与最高分、重置榜单、导出全部数据（JSON）。</li>
+                <li>成就系统：定义成就（ID/名称/标签）、颁发成就、查询是否已解锁、显示分组成就列表。</li>
+                <li>覆盖层 UI：右上角浮动面板，显示排行名次、金/银/铜徽章与成就解锁状态；样式通过动态注入的 &lt;style&gt; 管理。</li>
+                <li>显示控制：toggle 类型参数支持 'open'/'close'，也保留原有“切换”行为。</li>
+                <li>文档快捷按钮：扩展带有打开文档的按钮（打开扩展文档页面）。</li>
             </ul>
-            
-            <h2 id="zh-blocks">积木说明</h2>
-            <h3>标签和按钮</h3>
+
+            <h2 id="zh-blocks">积木说明（摘要）</h2>
             <ul>
-                <li><strong>标签</strong>：用于在积木区域进行分类标识</li>
-                <li><strong>按钮</strong>：可点击按钮，点击后会弹出提示框</li>
+                <li><strong>创建/管理排行榜</strong>：
+                    <ul>
+                        <li><code>创建排行榜 [BOARD]</code>：在本地创建一个榜单对象。</li>
+                        <li><code>提交分数 名称 [NAME] 分数 [SCORE] 到 [BOARD]</code>：提交并只在更高分或更早时间保留。</li>
+                        <li><code>获取前 [N] 名 从 [BOARD]</code>：以 JSON 字符串返回前 N 项（含 rank/name/score）。</li>
+                        <li><code>查询 名称 [NAME] 在 [BOARD] 的名次</code>、<code>查询 名称 [NAME] 在 [BOARD] 的最高分</code>、<code>重置排行榜 [BOARD]</code> 等。</li>
+                        <li><code>[TOGGLE] 排行榜 [BOARD]</code>：支持 TOGGLE 为 'open' 或 'close'；未指定时为切换显示。</li>
+                    </ul>
+                </li>
+                <li><strong>成就</strong>：
+                    <ul>
+                        <li><code>创建成就 ID [ID] 名称 [NAME] 标签 [TAG]</code>：按标签分组保存成就元数据。</li>
+                        <li><code>颁发成就 ID [ID] 标签 [TAG] 给 用户 [PLAYER] （可选名称 [NAME]）</code>：记录玩家在该标签下已解锁的成就（含时间戳）。</li>
+                        <li><code>成就 ID [ID] 在 标签 [TAG] 是否被 用户 [PLAYER] 解锁</code>：返回布尔值。</li>
+                        <li><code>[TOGGLE] 成就 标签 [TAG] 用户 [PLAYER]</code>：显示/隐藏对应玩家该标签下的成就列表，支持 'open'/'close'。</li>
+                    </ul>
+                </li>
+                <li><strong>其他</strong>：<code>整个排行榜数据</code> 返回包含 <code>__achievements_meta</code> 与 <code>__achievements_unlocked</code> 的整体 JSON。</li>
             </ul>
-            
-            <h3>命令块</h3>
-            <ul>
-                <li><strong>命令块</strong>：执行基本操作，会弹出提示框显示"Hello, A math stick figure!"</li>
-                <li><strong>带单个参数的命令块</strong>：接受一个文本参数并显示在提示框中</li>
-                <li><strong>带多个参数的命令块</strong>：接受三个文本参数并连接显示在提示框中</li>
-                <li><strong>带菜单的命令块</strong>：提供预设选项菜单供选择</li>
-                <li><strong>带可插入命令块的菜单命令块</strong>：菜单支持插入其他报告块</li>
-                <li><strong>不能在下方连接积木的命令块</strong>：终端命令块，无法在其下方连接其他积木</li>
-            </ul>
-            
-            <h3>报告块</h3>
-            <ul>
-                <li><strong>报告块</strong>：返回文本"Hello, A math stick figure!"，可在舞台查看数值</li>
-                <li><strong>不能在舞台查看的报告块</strong>：同样返回文本，但不能在舞台监视器中查看</li>
-            </ul>
-            
-            <h3>布尔块</h3>
-            <ul>
-                <li><strong>布尔块</strong>：返回真值(true)，可在舞台查看布尔值状态</li>
-            </ul>
-            
+
             <h2 id="zh-usage">使用方法</h2>
             <ol>
-                <li>将扩展文件加载到Scratch环境中</li>
-                <li>在扩展面板中找到"一只数学柴的扩展模板"</li>
-                <li>点击添加所需的积木到项目中</li>
-                <li>根据需要连接和使用积木</li>
+                <li>将扩展加载到 Scratch（或兼容环境）中；扩展 ID 为 <code>leaderboard</code>，会在积木面板显示对应的积木。</li>
+                <li>使用“创建排行榜”与“提交分数”收集数据；数据保存在 localStorage（键名如上）。</li>
+                <li>通过 <code>[TOGGLE] 排行榜 [BOARD]</code> 或 <code>[TOGGLE] 成就 标签 [TAG] 用户 [PLAYER]</code> 控制覆盖层显示；传入 'open' / 'close' 可以显式打开或关闭面板。</li>
+                <li>在覆盖层可查看前若干名次与成就解锁状态；超过 50 条时会提示“还有 N 条记录”。</li>
+                <li>可调用 <code>整个排行榜数据</code> 积木以获取完整 JSON 用于导出或调试。</li>
             </ol>
         </div>
         
@@ -212,54 +206,46 @@
                     <li><a href="#en-usage">Usage</a></li>
                 </ul>
             </div>
-            
+
             <h2 id="en-intro">Extension Introduction</h2>
-            <p>This is a Scratch extension template developed by "A Math Stick Figure" that demonstrates how to create custom Scratch extensions. This template includes examples of various types of blocks to help developers get started with extension development quickly.</p>
-            
+            <p>This extension (Version 1.2.0) implements Leaderboards and Achievements for Scratch-like environments. Data is stored locally in <code>localStorage</code> under the key <code>turbo_leaderboards_v1</code>. A floating overlay panel is provided to visualize leaderboards and grouped achievements.</p>
+
             <h2 id="en-features">Features</h2>
             <ul>
-                <li>Examples of multiple block types (command blocks, reporter blocks, boolean blocks, etc.)</li>
-                <li>Examples of blocks with parameters</li>
-                <li>Menu options examples</li>
-                <li>Button interaction examples</li>
-                <li>Label categorization examples</li>
-                <li>Multilingual support</li>
+                <li>Leaderboards: create boards, submit scores, get top N, query rank/highscore, reset board, export full data as JSON.</li>
+                <li>Achievements: define achievements (ID/name/tag), award achievements to players, check unlock status, display grouped achievement lists.</li>
+                <li>Overlay UI: top-right floating panel with badges (gold/silver/bronze) and unlocked/locked states. Styles are injected dynamically.</li>
+                <li>Display control: toggle parameter supports 'open'/'close' and also a toggle behavior if unspecified.</li>
+                <li>Doc button: a block opens the extension documentation in a new tab.</li>
             </ul>
-            
-            <h2 id="en-blocks">Block Descriptions</h2>
-            <h3>Labels and Buttons</h3>
+
+            <h2 id="en-blocks">Block Descriptions (summary)</h2>
             <ul>
-                <li><strong>Label</strong>: Used for category identification in the block area</li>
-                <li><strong>Button</strong>: Clickable button that shows an alert when clicked</li>
+                <li><strong>Leaderboard blocks</strong>:
+                    <ul>
+                        <li><code>CreateBoard [BOARD]</code> — create a board object in storage.</li>
+                        <li><code>SubmitScore NAME [NAME] SCORE [SCORE] TO [BOARD]</code> — submits a score; better scores or earlier timestamps are kept.</li>
+                        <li><code>GetTop [N] From [BOARD]</code> — returns top N as JSON array of {rank,name,score}.</li>
+                        <li><code>GetRank NAME [NAME] In [BOARD]</code>, <code>GetHighScore NAME [NAME] In [BOARD]</code>, <code>ResetBoard [BOARD]</code>, and <code>[TOGGLE] Leaderboard [BOARD]</code> (supports 'open'/'close').</li>
+                    </ul>
+                </li>
+                <li><strong>Achievement blocks</strong>:
+                    <ul>
+                        <li><code>CreateAchievement ID [ID] NAME [NAME] TAG [TAG]</code> — add achievement metadata grouped by tag.</li>
+                        <li><code>AwardAchievement ID [ID] TAG [TAG] TO PLAYER [PLAYER] (optional NAME [NAME])</code> — record unlocked achievement with timestamp.</li>
+                        <li><code>IsAchievementUnlocked ID [ID] TAG [TAG] PLAYER [PLAYER]</code> — returns boolean.</li>
+                        <li><code>[TOGGLE] Achievements TAG [TAG] PLAYER [PLAYER]</code> — show/hide the achievements overlay for a player (supports 'open'/'close').</li>
+                    </ul>
+                </li>
+                <li><strong>Other</strong>: <code>GetAllData</code> returns a JSON object containing <code>__achievements_meta</code> and <code>__achievements_unlocked</code>.</li>
             </ul>
-            
-            <h3>Command Blocks</h3>
-            <ul>
-                <li><strong>Command block</strong>: Executes basic operations and shows an alert with "Hello, A math stick figure!"</li>
-                <li><strong>Command block with single argument</strong>: Accepts a text argument and displays it in an alert</li>
-                <li><strong>Command block with multiple arguments</strong>: Accepts three text arguments and concatenates them in an alert</li>
-                <li><strong>Command block with menu</strong>: Provides preset menu options to choose from</li>
-                <li><strong>Command block with insertable menu</strong>: Menu supports inserting other reporter blocks</li>
-                <li><strong>Terminal command block</strong>: Cannot connect other blocks below it</li>
-            </ul>
-            
-            <h3>Reporter Blocks</h3>
-            <ul>
-                <li><strong>Reporter block</strong>: Returns text "Hello, A math stick figure!" and can be monitored on stage</li>
-                <li><strong>Non-monitorable reporter block</strong>: Also returns text but cannot be viewed in stage monitors</li>
-            </ul>
-            
-            <h3>Boolean Blocks</h3>
-            <ul>
-                <li><strong>Boolean block</strong>: Returns true value and can be monitored as a boolean on stage</li>
-            </ul>
-            
+
             <h2 id="en-usage">Usage</h2>
             <ol>
-                <li>Load the extension file into the Scratch environment</li>
-                <li>Find "A Math Stick Figure's Extension Template" in the extension panel</li>
-                <li>Click to add the desired blocks to your project</li>
-                <li>Connect and use the blocks as needed</li>
+                <li>Load the extension into Scratch or a compatible environment; extension id is <code>leaderboard</code>.</li>
+                <li>Create boards and submit scores using the provided blocks; data persists in localStorage.</li>
+                <li>Control the overlay with the toggle blocks; pass 'open' or 'close' to explicitly open/close the UI.</li>
+                <li>Use <code>GetAllData</code> to export the full dataset for debugging or backup.</li>
             </ol>
         </div>
         
